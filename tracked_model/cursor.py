@@ -120,7 +120,7 @@ class Cursor(pydantic.BaseModel):
         return self.__class__(
             xid_next=xid_next,
             xid_at=xid_at,
-            xid_at_id=last_modified_txid,
+            xid_at_id=last_object_id,
             xip_list=xip_list,
         )
 

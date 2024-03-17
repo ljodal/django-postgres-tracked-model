@@ -163,6 +163,41 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-ipware"
+version = "6.0.4"
+description = "A Django application to retrieve user's IP address"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django-ipware-6.0.4.tar.gz", hash = "sha256:614d0f0a911f8a765e55b6d358b1715bb85eeb63d1ebb77447d09d645f1343e8"},
+    {file = "django_ipware-6.0.4-py2.py3-none-any.whl", hash = "sha256:09c502ee3b1f8ae08d197d5e1f4397e965d0b201c83de7b5721db1fc460e6ab6"},
+]
+
+[package.dependencies]
+python-ipware = ">=2.0.0"
+
+[[package]]
+name = "django-structlog"
+version = "7.1.0"
+description = "Structured Logging for Django"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django-structlog-7.1.0.tar.gz", hash = "sha256:64d81553c97683f7c012744ef5c6dc515b58e2d7a658b7552ecb3879ac46f1a9"},
+    {file = "django_structlog-7.1.0-py3-none-any.whl", hash = "sha256:2139c94d13b800c5c1088ace438e12ca9bfe88182790f5776c58891e8cecc61c"},
+]
+
+[package.dependencies]
+asgiref = ">=3.6.0"
+django = ">=3.2"
+django-ipware = ">=6.0.2"
+structlog = ">=21.4.0"
+
+[package.extras]
+celery = ["celery (>=5.1)"]
+commands = ["django-extensions (>=1.4.9)"]
+
+[[package]]
 name = "django-stubs"
 version = "4.2.7"
 description = "Mypy stubs for Django"
@@ -794,6 +829,20 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 testing = ["Django", "django-configurations (>=2.0)"]
 
 [[package]]
+name = "python-ipware"
+version = "2.0.2"
+description = "A Python package to retrieve user's IP address"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "python-ipware-2.0.2.tar.gz", hash = "sha256:86e30cc3af62cec42284dedd49c8a14e436e73c96433c8645ec0b476ff4ad7ec"},
+    {file = "python_ipware-2.0.2-py3-none-any.whl", hash = "sha256:3a94fd073b93e12b13617e291f13eda3495d3ba68b580e3e30174ea84ac63041"},
+]
+
+[package.extras]
+dev = ["coverage[toml]", "coveralls (>=3.3,<4.0)", "ruff", "twine"]
+
+[[package]]
 name = "python-lsp-black"
 version = "2.0.0"
 description = "Black plugin for the Python LSP Server"
@@ -905,6 +954,23 @@ pure-eval = "*"
 
 [package.extras]
 tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
+
+[[package]]
+name = "structlog"
+version = "24.1.0"
+description = "Structured Logging for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "structlog-24.1.0-py3-none-any.whl", hash = "sha256:3f6efe7d25fab6e86f277713c218044669906537bb717c1807a09d46bca0714d"},
+    {file = "structlog-24.1.0.tar.gz", hash = "sha256:41a09886e4d55df25bdcb9b5c9674bccfab723ff43e0a86a1b7b236be8e57b16"},
+]
+
+[package.extras]
+dev = ["structlog[tests,typing]"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "sphinxext-opengraph", "twisted"]
+tests = ["freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
+typing = ["mypy (>=1.4)", "rich", "twisted"]
 
 [[package]]
 name = "tomli"
@@ -1064,4 +1130,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "a9b248191e946700097022a1e4cf3f6418a32f1c7a150518f19db17ea01e4c81"
+content-hash = "38779de9be5a1cb9e51a680181dea515bb1176fe1aacdd2ed013366eac4ec4f2"

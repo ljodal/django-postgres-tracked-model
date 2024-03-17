@@ -41,30 +41,38 @@ class ChangedObjectsSubquery(BaseExpression, Combinable):
         self.model_cls = model_cls
 
         # First priority is remaining changes from the current transaction
-        changes_1 = (
-            model_cls._default_manager.filter(
-                last_modified_txid=cursor.xid_at or 0,
-                object_id__gte=cursor.xid_at_id or 0,
-            )
-            .order_by("last_modified_txid", "object_id")
-            .values("last_modified_txid", "object_id", priority=Value(1))[:limit]
-        ).query
+        if cursor.xid_at:
+            changes_1 = (
+                model_cls._default_manager.filter(
+                    last_modified_txid=cursor.xid_at,
+                    object_id__gt=cursor.xid_at_id,
+                )
+                .order_by("last_modified_txid", "object_id")
+                .values("last_modified_txid", "object_id", priority=Value(1))
+            )[:limit].query
+        else:
+            changes_1 = model_cls._default_manager.none().query
         changes_1.subquery = True
 
         # Next any changes from the in-progress transactions
-        changes_2 = (
-            model_cls._default_manager.filter(last_modified_txid__in=cursor.xip_list)
-            .order_by("last_modified_txid", "object_id")
-            .values("last_modified_txid", "object_id", priority=Value(2))[:limit]
-        ).query
+        if cursor.xip_list:
+            changes_2 = (
+                model_cls._default_manager.filter(
+                    last_modified_txid__in=cursor.xip_list
+                )
+                .order_by("last_modified_txid", "object_id")
+                .values("last_modified_txid", "object_id", priority=Value(2))
+            )[:limit].query
+        else:
+            changes_2 = model_cls._default_manager.none().query
         changes_2.subquery = True
 
         # Finally changes from later transactions
         changes_3 = (
             model_cls._default_manager.filter(last_modified_txid__gte=cursor.xid_next)
             .order_by("last_modified_txid", "object_id")
-            .values("last_modified_txid", "object_id", priority=Value(3))[:limit]
-        ).query
+            .values("last_modified_txid", "object_id", priority=Value(3))
+        )[:limit].query
         changes_3.subquery = True
 
         self.queries = [changes_1, changes_2, changes_3]

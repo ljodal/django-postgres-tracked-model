@@ -37,6 +37,8 @@ ipdb = "^0.13.13"
 pytest = "^8.1.1"
 pytest-django = "^4.8.0"
 psycopg2 = "^2.9.9"
+structlog = "^24.1.0"
+django-structlog = "^7.1.0"
 
 [tool.isort]
 profile = "black"
@@ -54,4 +56,6 @@ strict = true
 django_settings_module = "demo.settings"
 
 [tool.pytest.ini_options]
+log_level = "INFO"
+
 DJANGO_SETTINGS_MODULE = "demo.settings"

@@ -88,11 +88,11 @@ def get_changed_objects(
         xip_list, xmin, xmax = conn.fetchone()
         snapshot = Snapshot(xip_list=xip_list, xmin=xmin, xmax=xmax)
 
-    changed_objects = ChangedObjectsSubquery(
-        model_cls=version_model, limit=limit, cursor=cursor
-    )
-
-    qs = queryset.filter(pk__in=changed_objects).annotate(
+    qs = queryset.filter(
+        pk__in=ChangedObjectsSubquery(
+            model_cls=version_model, limit=limit, cursor=cursor
+        )
+    ).annotate(
         _object_id=F("pk"),
         _last_modified_txid=F("version_info__last_modified_txid"),
     )

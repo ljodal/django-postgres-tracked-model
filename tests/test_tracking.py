@@ -5,11 +5,11 @@ from django.db import transaction
 
 from demo.models import MyModel
 
+from .utils import get_current_txid
+
 
 @pytest.mark.django_db(transaction=True)
-def test_insert_and_update_separate_transactions(
-    get_current_txid: Callable[[], int]
-) -> None:
+def test_insert_and_update_separate_transactions() -> None:
     """
     Test inserting an object in one transaction and then updating it in another
     """

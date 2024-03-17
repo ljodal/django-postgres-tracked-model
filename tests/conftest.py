@@ -1,28 +1,33 @@
-from typing import Callable
+from typing import Any, Callable
 
 import pytest
+import structlog
 from django.apps.registry import Apps
 from django.db import connection
 from django.db.migrations.executor import MigrationExecutor
 
 from .types import MigrateToFixture
+from .utils import get_current_txid
+
+
+@pytest.hookimpl()
+def pytest_plugin_registered(plugin: Any, plugin_name: str) -> None:
+    """
+    Use structlog to format the logged messages
+    """
+
+    if plugin_name == "logging-plugin":
+        formatter = structlog.stdlib.ProcessorFormatter(
+            processors=[
+                structlog.stdlib.ProcessorFormatter.remove_processors_meta,
+                structlog.dev.ConsoleRenderer(),
+            ],
+        )
+        plugin.report_handler.setFormatter(formatter)
 
 
 @pytest.fixture
-def get_current_txid(db: None) -> Callable[[], int]:
-    def _get_current_txid() -> int:
-        assert connection.in_atomic_block
-        with connection.cursor() as cursor:
-            cursor.execute("select adjusted_txid_current();")
-            row = cursor.fetchone()
-            assert isinstance(row[0], int)
-            return row[0]
-
-    return _get_current_txid
-
-
-@pytest.fixture
-def current_txid(get_current_txid: Callable[[], int]) -> int:
+def current_txid(db: None) -> int:
     return get_current_txid()
 
 

@@ -20,5 +20,5 @@ from django.urls import path
 from .views import get_changes
 
 urlpatterns = [
-    path("/api/v1/changes/", get_changes),
+    path("api/v1/changes/", get_changes),
 ]
